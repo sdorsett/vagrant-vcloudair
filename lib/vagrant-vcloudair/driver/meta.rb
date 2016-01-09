@@ -19,6 +19,7 @@ require 'forwardable'
 require 'log4r'
 require 'nokogiri'
 require 'httpclient'
+require 'pry'
 
 require File.expand_path('../base', __FILE__)
 
@@ -42,28 +43,28 @@ module VagrantPlugins
           # Logging into vCloud Air
           params = {
             'method'  => :post,
-            'command' => '/vchs/sessions'
+            'command' => '/iam/login'
           }
 
           _response, headers = send_vcloudair_request(params)
 
-          unless headers.key?('x-vchs-authorization')
+          unless headers.key?('vchs-authorization')
             fail Errors::InvalidRequestError,
                  :message => 'Failed to authenticate: ' \
-                             'missing x-vchs-authorization header'
+                             'missing vchs-authorization header'
           end
 
-          @vcloudair_auth_key = headers['x-vchs-authorization']
+          @vcloudair_auth_key = "Bearer " + headers['vchs-authorization']
 
           # Get Services available
           params = {
             'method'  => :get,
-            'command' => '/vchs/services'
+            'command' => '/sc/instances'
           }
 
           response, _headers = send_vcloudair_request(params)
           services = response.css('Services Service')
-
+          binding.pry
           service_id = cloud_id || vdc_name
           services.each do |service|
             if service['serviceId'] == service_id

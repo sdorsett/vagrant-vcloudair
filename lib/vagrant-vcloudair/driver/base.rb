@@ -298,7 +298,7 @@ module VagrantPlugins
             clnt.ssl_config.verify_callback = proc { |ok, ctx|; true }
 
             extheader = {}
-            extheader['accept'] = 'application/xml;version=5.6'
+            extheader['accept'] = 'application/xml;version=5.7'
 
             unless content_type.nil?
               extheader['Content-Type'] = content_type
@@ -306,7 +306,7 @@ module VagrantPlugins
 
             if @vcloudair_auth_key
               @logger.debug("vCloud Air authorization key: #{@vcloudair_auth_key}")
-              extheader['x-vchs-authorization'] = @vcloudair_auth_key
+              extheader['Authorization'] = @vcloudair_auth_key
             else
               @logger.debug('vCloud Air authorization not set')
               @logger.debug("Sending username: #{@username} and password: #{@password}")
@@ -314,7 +314,7 @@ module VagrantPlugins
               # clnt.set_auth(nil, @username, @password)
             end
 
-            url = "https://vchs.vmware.com/api#{params['command']}"
+            url = "https://vca.vmware.com/api#{params['command']}"
 
             # Massive debug when LOG=DEBUG
             # Using awesome_print to get nice XML output for better readability
