@@ -25,6 +25,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rspec-core', '~> 2.12.2'
   s.add_development_dependency 'rspec-expectations', '~> 2.12.1'
   s.add_development_dependency 'rspec-mocks', '~> 2.12.1'
+  s.add_development_dependency 'pry'
 
   s.files = `git ls-files`.split($/)
   s.executables = s.files.grep(%r{^bin/}) { |f| File.basename(f) }
